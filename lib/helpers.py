@@ -10,14 +10,32 @@ def exit_program():
 #division functions:
 def list_divisions():
     divisions = Division.get_all()
-    print("Performing useful function#1.")
+    print("Please see all divisions list below:")
     for index, division in enumerate(divisions, start=1):
         print(f"{index}: {division.name}")
-def find_division_by_id():
+def find_division_by_id(user_input):
     # use a trailing underscore not to override the built-in id function
-    id_ = input("Enter the department's id: ") - 1
-    department = Division.find_by_id(id_)
-    print(department) if department else print(f'Department {id_} not found')
+    division = Division.find_by_id(user_input)
+    print(f'Welcome to {division.name}, division weight: {division.weight}. ' +
+            f"Please see the list of fighters below in this division") if division else print(f'Division {user_input} not found')
+    return division
 
+def show_info_for_current_division():
+    pass
 
 #fighter functions:
+def list_division_fighters(user_input):
+    if division := Division.find_by_id(user_input):
+        all_fighters_in_this_division = division.fighters()
+        for index, fighter in enumerate(all_fighters_in_this_division, start=1):
+            print(f"{index}: {fighter.name}")
+    else:
+        print(f'Division {user_input} not found')
+
+def find_fighter_by_id(user_input1, user_input2):
+    # use a trailing underscore not to override the built-in id function
+    division = Division.find_by_id(user_input1)
+    all_fighters_in_this_division = division.fighters()
+    fighter = all_fighters_in_this_division[user_input2-1]
+    print(f'Name: {fighter.name}, record: {fighter.record}.') if fighter else print(f'Fighter #{user_input} not found')
+    return fighter

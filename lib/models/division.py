@@ -34,14 +34,11 @@ class Division:
 
     @weight.setter
     def weight(self, weight):
-        exsiting_division_weight = []
-        for value in Division.all:
-            exsiting_division_weight.append(value.weight)
-        if isinstance(weight, int) and weight > 0 and (weight not in exsiting_division_weight):
+        if isinstance(weight, int) and weight > 0:
             self._weight = weight
         else:
             raise ValueError(
-                "New division's weight must be an integer greater than 0, and it must not be the same weigth as any exisiting division's weight."
+                "New division's weight must be an integer greater than 0"
             )
 
     @classmethod
@@ -83,6 +80,8 @@ class Division:
     @classmethod
     def create(cls, name, weight):
         """ Initialize a new Division instance and save the object to the database """
+        if weight in [div.weight for div in cls.all.values()]:
+            raise ValueError("Weight must be unique among divisions.")
         division = cls(name, weight)
         division.save()
         return division
@@ -168,16 +167,16 @@ class Division:
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
-    def employees(self):
+    def fighters(self):
         """Return list of employees associated with current department"""
-        from models.employee import Employee
+        from models.fighter import Fighter
         sql = """
-            SELECT * FROM employees
-            WHERE department_id = ?
+            SELECT * FROM fighters
+            WHERE division_id = ?
         """
         CURSOR.execute(sql, (self.id,),)
 
         rows = CURSOR.fetchall()
         return [
-            Employee.instance_from_db(row) for row in rows
+            Fighter.instance_from_db(row) for row in rows
         ]
