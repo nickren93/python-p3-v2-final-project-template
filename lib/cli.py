@@ -5,7 +5,8 @@ from helpers import (
     list_divisions,
     find_division_by_id,
     list_division_fighters,
-    find_fighter_by_id
+    find_fighter_by_id,
+    update_fighter
 )
 
 
@@ -18,9 +19,10 @@ def main():
         if choice_1 == "E":
             exit_program()
         
+        #get into ufc_menu with the list of all current divisions
         elif choice_1 == "D":
             while True:
-                list_divisions()
+                divisions = list_divisions()
                 ufc_menu()
                 choice_2 = input("> ").upper()
 
@@ -31,19 +33,47 @@ def main():
                 elif choice_2 == "B":
                     break
 
-                #get into division_menu, if user choose a division #
-                elif choice_2 == "1" or choice_2 == "2":
-                    if find_division_by_id(int(choice_2)):
-                        list_division_fighters(choice_2)
-                        division_menu()
-                        choice_3 = input("> ").upper()
-                        #to exit the app
-                        if choice_3 == "E":
-                            exit_program() 
-                        #get into fighter_menu, if user choose a fighter #
-                        elif choice_3 == "1" or choice_3 == "2" or choice_3 == "3":
-                            if find_fighter_by_id(int(choice_2), int(choice_3)):
-                                fighter_menu()
+                #check if user choose a valid division #
+                elif 1 <= int(choice_2) <= len(divisions):
+                    division = find_division_by_id(int(choice_2))
+                    #get into division_menu if a valid division number is chosen by user:
+                    if division:
+                        while True:
+                            all_fighters_in_this_division = division.fighters()
+                            list_division_fighters(choice_2)
+                            division_menu()
+                            choice_3 = input("> ").upper()
+
+                            #to exit the app
+                            if choice_3 == "E":
+                                exit_program() 
+                            #to go back to previous menu
+                            elif choice_3 =="B":
+                                break
+                            #check if user choose a valid fighter #
+                            elif 1 <= int(choice_3) <= len(all_fighters_in_this_division):
+                                fighter = find_fighter_by_id(int(choice_2), int(choice_3))
+                                if fighter:
+                                    #if user chose a valid fighter#, get into fighter menu:
+                                    while True:
+                                        fighter_menu()
+                                        choice_4 = input("> ").upper()
+
+                                        #to exit the app
+                                        if choice_4 == "E":
+                                            exit_program()
+                                        #to go back to previous menu (fighter list)
+                                        elif choice_4 == "B":
+                                            break  
+                                        elif choice_4 == "U":
+                                            print("Updating fighter (not implemented yet)")
+                                            update_fighter(int(choice_2), int(choice_3))
+                                        elif choice_4 == "D":
+                                            print("Deleting fighter (not implemented yet)")
+                                        else:
+                                            print("Invalid choice")
+                            else:
+                                print("Invalid choice")
             
                 #if user input is invalid
                 else:
