@@ -37,7 +37,7 @@ pipenv install
 pipenv shell
 ```
 
-To start the CLI application, run the following commands:
+To start the CLI application, ensure the script file is executable with chmod +x, and run the following commands:
 
 ```console
 python lib/seed.py
