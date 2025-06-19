@@ -18,8 +18,24 @@ def list_divisions():
 def find_division_by_id(user_input):
     # use a trailing underscore not to override the built-in id function
     division = Division.find_by_id(user_input)
-    return division
+    return division if division else print(f'Division {user_input} not found')
 
+
+def create_new_division():
+    name = input("Enter the new division name: ")
+    weight = input("Enter the new division weight requirement(lbs): ")
+    try:
+        division= Division.create(name, weight)
+        print(f'Successfully added new fighter: {division.name}')
+    except Exception as exc:
+        print("Error creating new division: ", exc)
+
+def delete_division(user_input):
+    if division := Division.find_by_id(user_input):
+        division.delete()
+        print(f'Department {user_input} deleted')
+    else:
+        print(f'Department {user_input} not found') 
 
 #fighter functions:
 def create_new_fighter(user_input):
@@ -30,7 +46,7 @@ def create_new_fighter(user_input):
         fighter = Fighter.create(name, record, division_id)
         print(f'Successfully added new fighter: {fighter.name}')
     except Exception as exc:
-        print("Error creating employee: ", exc)
+        print("Error creating new fighter: ", exc)
 
 def list_division_fighters(user_input):
     if division := Division.find_by_id(user_input):

@@ -8,7 +8,9 @@ from helpers import (
     find_fighter_by_id,
     update_fighter,
     delete_fighter,
-    create_new_fighter
+    create_new_fighter,
+    delete_division,
+    create_new_division
 )
 
 
@@ -34,6 +36,9 @@ def main():
                 #get back to the previous menu
                 elif choice_2 == "B":
                     break
+
+                elif choice_2 == "A":
+                    create_new_division()
 
                 #check if user choose a valid division #
                 elif choice_2.isdigit() and 1 <= int(choice_2) <= len(divisions):
@@ -77,10 +82,11 @@ def main():
                                             print("Invalid choice")
                             #Add a new fighter into this division if user type "A"
                             elif choice_3 =="A":
-                                create_new_fighter(choice_2)
+                                create_new_fighter(int(choice_2))
                             #Delete the current division, if user type "D"
                             elif choice_3 =="D":
-                                pass
+                                delete_division(int(choice_2))
+                                break
                             else:
                                 print("Invalid choice")
             
@@ -104,6 +110,7 @@ def ufc_menu():
     print("Please select an option:")
     print('To Exit the program, press "E"')
     print('To select a division, press the correspoding tag number shown above')
+    print('To add a new division to UFC, press "A"')
     print('Go back to previous menu, press "B"')
     print("*******************************************")
 
