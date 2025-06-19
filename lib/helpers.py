@@ -69,12 +69,15 @@ def update_fighter(user_input1, user_input2):
     if fighter:
         try:
             name = input("Enter the fighter's new name: ")
-            fighter.name = name
+            if name:
+                fighter.name = name
             record = input("Enter the fighter's new record: ")
-            fighter.record = record
+            if record:
+                fighter.record = record
             division_name = input("Enter the fighter's new division name: ")
-            division_id = Division.find_by_name(division_name).id
-            fighter.division_id = division_id
+            if division_name:
+                division_id = Division.find_by_name(division_name).id
+                fighter.division_id = division_id
 
             fighter.update()
             print(f'Successfuly update fighter: {fighter.name}')
