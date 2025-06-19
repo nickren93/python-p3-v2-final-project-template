@@ -6,7 +6,9 @@ from helpers import (
     find_division_by_id,
     list_division_fighters,
     find_fighter_by_id,
-    update_fighter
+    update_fighter,
+    delete_fighter,
+    create_new_fighter
 )
 
 
@@ -34,10 +36,12 @@ def main():
                     break
 
                 #check if user choose a valid division #
-                elif 1 <= int(choice_2) <= len(divisions):
+                elif choice_2.isdigit() and 1 <= int(choice_2) <= len(divisions):
                     division = find_division_by_id(int(choice_2))
                     #get into division_menu if a valid division number is chosen by user:
                     if division:
+                        print(f'Welcome to {division.name}, division weight: {division.weight}. ' +
+                                f"Please see the list of fighters below in this division") if division else print(f'Division {choice_2} not found')
                         while True:
                             all_fighters_in_this_division = division.fighters()
                             list_division_fighters(choice_2)
@@ -51,7 +55,7 @@ def main():
                             elif choice_3 =="B":
                                 break
                             #check if user choose a valid fighter #
-                            elif 1 <= int(choice_3) <= len(all_fighters_in_this_division):
+                            elif choice_3.isdigit() and 1 <= int(choice_3) <= len(all_fighters_in_this_division):
                                 fighter = find_fighter_by_id(int(choice_2), int(choice_3))
                                 if fighter:
                                     #if user chose a valid fighter#, get into fighter menu:
@@ -66,12 +70,17 @@ def main():
                                         elif choice_4 == "B":
                                             break  
                                         elif choice_4 == "U":
-                                            print("Updating fighter (not implemented yet)")
                                             update_fighter(int(choice_2), int(choice_3))
                                         elif choice_4 == "D":
-                                            print("Deleting fighter (not implemented yet)")
+                                            delete_fighter(int(choice_2), int(choice_3))
                                         else:
                                             print("Invalid choice")
+                            #Add a new fighter into this division if user type "A"
+                            elif choice_3 =="A":
+                                create_new_fighter(choice_2)
+                            #Delete the current division, if user type "D"
+                            elif choice_3 =="D":
+                                pass
                             else:
                                 print("Invalid choice")
             
@@ -84,6 +93,7 @@ def main():
 
 def menu():
     print("*******************************************")
+    print("Welcome to UFC division and fighter look up App !!")
     print("Please select an option:")
     print('To Exit the program, press "E"')
     print('To shown current divisions, press "D"')
