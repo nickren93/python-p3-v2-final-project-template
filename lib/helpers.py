@@ -25,7 +25,7 @@ def create_new_division():
     name = input("Enter the new division name: ")
     weight = input("Enter the new division weight requirement(lbs): ")
     try:
-        division= Division.create(name, weight)
+        division= Division.create(name, int(weight))
         print(f'Successfully added new fighter: {division.name}')
     except Exception as exc:
         print("Error creating new division: ", exc)
