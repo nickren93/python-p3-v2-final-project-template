@@ -80,7 +80,7 @@ def update_fighter(user_input1, user_input2):
                 fighter.division_id = division_id
 
             fighter.update()
-            print(f'Successfuly update fighter: {fighter.name}')
+            print(f'Successfuly update fighter: {fighter.name}, record: {fighter.record}, division: {Division.find_by_id(fighter.division_id).name}')
         except Exception as exc:
             print("Error updating employee: ", exc)
 
