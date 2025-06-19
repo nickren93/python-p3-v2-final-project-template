@@ -76,8 +76,12 @@ def update_fighter(user_input1, user_input2):
                 fighter.record = record
             division_name = input("Enter the fighter's new division name: ")
             if division_name:
-                division_id = Division.find_by_name(division_name).id
-                fighter.division_id = division_id
+                division = Division.find_by_name(division_name)
+                if division:
+                    division_id = division.id
+                    fighter.division_id = division_id
+                else:
+                    raise ValueError("Division must be one of the current divisions in UFC.")
 
             fighter.update()
             print(f'Successfuly update fighter: {fighter.name}, record: {fighter.record}, division: {Division.find_by_id(fighter.division_id).name}')

@@ -1,18 +1,10 @@
-# Phase 3 CLI+ORM Project Template
-
-## Learning Goals
-
-- Discuss the basic directory structure of a CLI.
-- Outline the first steps in building a CLI.
-
----
+# Phase 3 Project: UFC Fighters & Divisions Look Up CLI
 
 ## Introduction
 
-You now have a basic idea of what constitutes a CLI. Fork and clone this lesson
-for a project template for your CLI.
+This is a simple command-line interface (CLI) application that allows a user on the current machine to create, read, update, and delete information about UFC divisions and fighters. The user can enter input as instructed by prompts. A CLI is essentially an interactive script that prompts the user and performs operations based on the input.
 
-Take a look at the directory structure:
+The directory structure of this application is shown below, starting from the root folder (python-p3-v2-final-project-template):
 
 ```console
 .
@@ -22,151 +14,137 @@ Take a look at the directory structure:
 └── lib
     ├── models
     │   ├── __init__.py
-    │   └── model_1.py
+    │   ├── division.py
+    │   └── fighter.py
     ├── cli.py
     ├── debug.py
+    ├── seed.py
+    ├── menus.py
     └── helpers.py
-```
+└── ufc.db
 
-Note: The directory also includes two files named `CONTRIBUTING.md` and
-`LICENSE.md` that are specific to Flatiron's curriculum. You can disregard or
-delete the files if you want.
+```
+The main functionality for these files is explained in the "CLI Files and Functions" section below..
 
 ---
 
-## Generating Your Environment
+## Getting Started & Environment Setup
 
-You might have noticed in the file structure- there's already a Pipfile!
-
-Install any additional dependencies you know you'll need for your project by
-adding them to the `Pipfile`. Then run the commands:
+From the project’s root directory, open your terminal and run the following commands to install dependencies and set up a virtual environment:
 
 ```console
 pipenv install
 pipenv shell
 ```
 
----
+To start the CLI application, run the following commands:
 
-## Generating Your CLI
-
-A CLI is, simply put, an interactive script and prompts the user and performs
-operations based on user input.
-
-The project template has a sample CLI in `lib/cli.py` that looks like this:
-
-```py
-# lib/cli.py
-
-from helpers import (
-    exit_program,
-    helper_1
-)
-
-
-def main():
-    while True:
-        menu()
-        choice = input("> ")
-        if choice == "0":
-            exit_program()
-        elif choice == "1":
-            helper_1()
-        else:
-            print("Invalid choice")
-
-
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. Some useful function")
-
-
-if __name__ == "__main__":
-    main()
+```console
+python lib/seed.py
+python lib/cli.py
 ```
+---
 
-The helper functions are located in `lib/helpers.py`:
+## CLI Files and Functions
 
-```py
-# lib/helpers.py
+To use the CLI, start with cli.py inside the lib folder.
+Important: Run seed.py first to set up the database with some starter data.
 
-def helper_1():
-    print("Performing useful function#1.")
-
-
-def exit_program():
-    print("Goodbye!")
-    exit()
-```
-
-You can run the template CLI with `python lib/cli.py`, or include the shebang
-and make it executable with `chmod +x`. The template CLI will ask for input, do
-some work, and accomplish some sort of task.
-
-Past that, CLIs can be whatever you'd like, as long as you follow the project
-requirements.
-
-Of course, you will update `lib/cli.py` with prompts that are appropriate for
-your application, and you will update `lib/helpers.py` to replace `helper_1()`
-with a useful function based on the specific problem domain you decide to
-implement, along with adding other helper functions to the module.
-
-In the `lib/models` folder, you should rename `model_1.py` with the name of a
-data model class from your specific problem domain, and add other classes to the
-folder as needed. The file `lib/models/__init__.py` has been initialized to
-create the necessary database constants. You need to add import statements to
-the various data model classes in order to use the database constants.
-
-You are also welcome to implement a different module and directory structure.
-However, your project should be well organized, modular, and follow the design
-principal of separation of concerns, which means you should separate code
-related to:
-
-- User interface
-- Data persistence
-- Problem domain rules and logic
+The cli.py file imports functions from several modules, with the two key ones being menus.py and helpers.py.
 
 ---
 
-## Updating README.md
+### menus.py:
+This file displays various menus to guide the user through the app.
 
-`README.md` is a Markdown file that should describe your project. You will
-replace the contents of this `README.md` file with a description of **your**
-actual project.
+**menu()**
+    Displays the welcome and main instructions when the user first enters the CLI.
 
-Markdown is not a language that we cover in Flatiron's Software Engineering
-curriculum, but it's not a particularly difficult language to learn (if you've
-ever left a comment on Reddit, you might already know the basics). Refer to the
-cheat sheet in this assignments's resources for a basic guide to Markdown.
+**ufc_menu()**
+    Shown after the user types D in the main menu. Displays the list of divisions and related options.
 
-### What Goes into a README?
+**division_menu()**
+    Displayed after the user selects a valid division tag number. Shows options for managing fighters and the division
 
-This README serves as a template. Replace the contents of this file to describe
-the important files in your project and describe what they do. Each Python file
-that you edit should get at least a paragraph, and each function should be
-described with a sentence or two.
-
-Describe your actual CLI script first, and with a good level of detail. The rest
-should be ordered by importance to the user. (Probably functions next, then
-models.)
-
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
+**fighter_menu()**
+    Shown after the user selects a valid fighter. Provides options to update or delete that fighter.
 
 ---
 
-## Conclusion
+### helpers.py:
 
-A lot of work goes into a good CLI, but it all relies on concepts that you've
-practiced quite a bit by now. Hopefully this template and guide will get you off
-to a good start with your Phase 3 Project.
+This file contains helper functions related to the Division and Fighter classes located in models/division.py and models/fighter.py. These helpers call ORM methods in the corresponding classes.
 
-Happy coding!
+**exit_program()**
+    Exits the program when the user enters E.
+
+**list_divisions()**
+    Lists all current divisions stored in the database.
+
+**find_division_by_id(user_input)**
+    Finds and displays a division by its ID, if valid.
+
+**create_new_division()**
+    Allows the user to create a new division (triggered by typing A in the UFC menu).
+
+**delete_division(user_input)**
+    Deletes a division from the database (available inside a division’s menu)..
+
+**create_new_fighter(user_input)**
+    Lets the user create a new fighter within a selected division.
+
+**list_division_fighters(user_input)**
+    Lists all fighters in a selected division.
+
+**find_fighter_by_id(user_input1, user_input2)**
+    Finds and displays a fighter based on division and fighter selection.
+
+**update_fighter(user_input1, user_input2)**
+    Updates a fighter’s information, including name, record, and division.
+
+**delete_fighter(user_input1, user_input2)**
+    Deletes a fighter from the database.
+
+---
+
+### seed.py
+
+This script initializes the database and populates it with basic tables and sample data.
+Run this before starting the CLI.
+
+---
+
+### menus.py:
+
+This file together with lib/__init__.py help creating database and populate the database with 
+some basic tables and data. Recommend to run this before using the cli.py.
+
+---
+
+### division.py
+
+Defines the Division class, with properties, validation logic, and ORM methods to interact with the database and related fighters. 
+
+---
+
+### fighter.py
+
+Defines the Fighter class, with properties, validation logic, and ORM methods to manage fighter data and their division relationship.
+
+---
+
+### __init__.py
+
+Initializes the SQLite database connection and provides shared access to the connection and cursor throughout the app.
+
+---
+
+## Contributor
+    Sitong Ren
 
 ---
 
 ## Resources
 
 - [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
+- [Click documentation](https://click.palletsprojects.com/en/stable/)
