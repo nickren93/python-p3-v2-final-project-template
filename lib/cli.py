@@ -40,8 +40,9 @@ def fighter_loop_menu(fighter):
 
 
 def division_loop_menu(division):
-    list_division_fighters(division)
     all_fighters_in_this_division = division.fighters()
+    
+    list_division_fighters(division)
     division_menu()
     choice_3 = input("> ").upper()
 

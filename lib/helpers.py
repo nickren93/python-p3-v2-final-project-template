@@ -30,12 +30,9 @@ def create_new_division():
     except Exception as exc:
         print("Error creating new division: ", exc)
 
-def delete_division(user_input):
-    if division := Division.find_by_id(user_input):
-        division.delete()
-        print(f'Department {user_input} deleted')
-    else:
-        print(f'Department {user_input} not found') 
+def delete_division(division):
+    print(f'Fighter: {division.name} deleted')
+    division.delete() 
 
 #fighter functions:
 def create_new_fighter(division):
