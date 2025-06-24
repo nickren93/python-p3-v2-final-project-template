@@ -21,7 +21,8 @@ from menus import (
 )
 
 
-def fighter_loop_menu(fighter):
+def fighter_loop_menu(division, fighter):
+    print(f"UFC fighter: {fighter.name}, record: {fighter.record}, division: {division.name}")
     fighter_menu()
     choice_4 = input("> ").upper()
     #if user input is not B, perform other valid action. If user input is B, go back to previous menu
@@ -57,7 +58,7 @@ def division_loop_menu(division):
         elif choice_3.isdigit() and 1 <= int(choice_3) <= len(all_fighters_in_this_division):
             # fighter = find_fighter_by_id(int(choice_2), int(choice_3))
             fighter = all_fighters_in_this_division[int(choice_3)-1]
-            fighter_loop_menu(fighter)
+            fighter_loop_menu(division, fighter)
         elif choice_3 =="D":
             delete_division(division)
         #all inputs other than the options provided deemed invalid 
@@ -66,8 +67,6 @@ def division_loop_menu(division):
         list_division_fighters(division)
         division_menu()
         choice_3 = input("> ").upper()
-
-
 
 
 def ufc_loop_menu():
@@ -97,45 +96,25 @@ def ufc_loop_menu():
 
         divisions = list_divisions()
         ufc_menu()
-        choice_2 = input("> ").upper()    
+        choice_2 = input("> ").upper()  
+
 
 def main():
     menu()
     choice_1 = input("> ").upper()
 
-    while choice_1 != "B":
-
-        if choice_1 == "E":
-            exit_program()
-        
+    while choice_1 != "E":
         #get into ufc_menu with the list of all current divisions
-        elif choice_1 == "D":
-            divisions = list_divisions()
-            ufc_menu()
-            choice_2 = input("> ").upper()
+        if choice_1 == "D":
+            ufc_loop_menu()
 
-            if choice_2 == "E":
-                exit_program()
+        elif choice_1 != "E":
+            print("Invalid choice")
 
-            #get back to the previous menu
-            elif choice_2 == "B":
-                break
+        menu()
+        choice_1 = input("> ").upper()
 
-            elif choice_2 == "A":
-                create_new_division()
-
-            #check if user choose a valid division #
-            elif choice_2.isdigit() and 1 <= int(choice_2) <= len(divisions):
-                division = divisions[int(choice_2)-1]
-                #get into division_menu if a valid division number is chosen by user:
-                division_loop_menu(division)
-
-            elif choice_1 != "B":
-                print("Invalid choice")
-
-            menu()
-            choice_1 = input("> ").upper()
-
+    exit_program()
 
 if __name__ == "__main__":
     main()
