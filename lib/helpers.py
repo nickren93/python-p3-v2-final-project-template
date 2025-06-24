@@ -38,23 +38,23 @@ def delete_division(user_input):
         print(f'Department {user_input} not found') 
 
 #fighter functions:
-def create_new_fighter(user_input):
+def create_new_fighter(division):
     name = input("Enter the fighter's name: ")
     record = input("Enter the fighter's record: ")
-    division_id = find_division_by_id(user_input).id
+    division_id = division.id
     try:
         fighter = Fighter.create(name, record, division_id)
         print(f'Successfully added new fighter: {fighter.name}')
     except Exception as exc:
         print("Error creating new fighter: ", exc)
 
-def list_division_fighters(user_input):
-    if division := Division.find_by_id(user_input):
-        all_fighters_in_this_division = division.fighters()
-        for index, fighter in enumerate(all_fighters_in_this_division, start=1):
-            print(f"{index}: {fighter.name}")
-    else:
-        print(f'Division {user_input} not found')
+def list_division_fighters(division):
+    print(f'Welcome to {division.name}, division weight: {division.weight}. ' +
+        f"Please see the list of fighters below in this division")
+    all_fighters_in_this_division = division.fighters()
+    for index, fighter in enumerate(all_fighters_in_this_division, start=1):
+        print(f"{index}: {fighter.name}")
+
 
 def find_fighter_by_id(user_input1, user_input2):
     # use a trailing underscore not to override the built-in id function
@@ -64,39 +64,30 @@ def find_fighter_by_id(user_input1, user_input2):
     print(f'Name: {fighter.name}, record: {fighter.record}.') if fighter else print(f'Fighter #{user_input2} not found')
     return fighter
 
-def update_fighter(user_input1, user_input2):
-    fighter = find_fighter_by_id(user_input1, user_input2)
-    if fighter:
-        try:
-            name = input("Enter the fighter's new name: ")
-            if name:
-                fighter.name = name
-            record = input("Enter the fighter's new record: ")
-            if record:
-                fighter.record = record
-            division_name = input("Enter the fighter's new division name: ")
-            if division_name:
-                division = Division.find_by_name(division_name)
-                if division:
-                    division_id = division.id
-                    fighter.division_id = division_id
-                else:
-                    raise ValueError("Division must be one of the current divisions in UFC.")
+def update_fighter(fighter):
+    try:
+        name = input("Enter the fighter's new name: ")
+        if name:
+            fighter.name = name
+        record = input("Enter the fighter's new record: ")
+        if record:
+            fighter.record = record
+        division_name = input("Enter the fighter's new division name: ")
+        if division_name:
+            division = Division.find_by_name(division_name)
+            if division:
+                division_id = division.id
+                fighter.division_id = division_id
+            else:
+                raise ValueError("Division must be one of the current divisions in UFC.")
 
-            fighter.update()
-            print(f'Successfuly update fighter: {fighter.name}, record: {fighter.record}, division: {Division.find_by_id(fighter.division_id).name}')
-        except Exception as exc:
-            print("Error updating employee: ", exc)
+        fighter.update()
+        print(f'Successfuly update fighter: {fighter.name}, record: {fighter.record}, division: {Division.find_by_id(fighter.division_id).name}')
+    except Exception as exc:
+        print("Error updating employee: ", exc)
 
-    else:
-        print(f'Fighter {user_input2} not found')
 
-def delete_fighter(user_input1, user_input2):
-    division = Division.find_by_id(user_input1)
-    all_fighters_in_this_division = division.fighters()
-    fighter = all_fighters_in_this_division[user_input2-1]
-    if fighter:
-        print(f'Fighter: {fighter.name} deleted')
-        fighter.delete()
-    else:
-        print(f'Fighter {user_input2} not found')
+
+def delete_fighter(fighter):
+    print(f'Fighter: {fighter.name} deleted')
+    fighter.delete()
