@@ -34,6 +34,7 @@ def fighter_loop_menu(division, fighter):
             update_fighter(fighter)
         elif choice_4 == "D":
             delete_fighter(fighter)
+            break
         elif choice_4 != "B":
             print("Invalid choice")
         fighter_menu()
@@ -41,13 +42,13 @@ def fighter_loop_menu(division, fighter):
 
 
 def division_loop_menu(division):
-    all_fighters_in_this_division = division.fighters()
-
+    
     list_division_fighters(division)
     division_menu()
     choice_3 = input("> ").upper()
 
     while choice_3 != "B":
+        all_fighters_in_this_division = division.fighters()
         #to exit the app
         if choice_3 == "E":
             exit_program()
@@ -61,9 +62,11 @@ def division_loop_menu(division):
             fighter_loop_menu(division, fighter)
         elif choice_3 =="D":
             delete_division(division)
+            break
         #all inputs other than the options provided deemed invalid 
         elif choice_3 != "B":
             print("Invalid choice")
+        all_fighters_in_this_division = division.fighters()
         list_division_fighters(division)
         division_menu()
         choice_3 = input("> ").upper()
